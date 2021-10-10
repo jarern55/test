@@ -35,10 +35,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_pageDataList[_selectedDrawerItemIndex]['title'] as String),
-        actions: [
+        /*actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.search)),
           IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
-        ],
+        ],*/
       ),
       drawer: Drawer(
         child: ListView(
