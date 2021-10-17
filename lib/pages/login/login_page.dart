@@ -146,40 +146,35 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _handleClickButton(int num) {
+  _handleClickButton(int num) async {
     print('You pressed $num');
 
-    setState(() {
-      if (num == -1) {
-        if (_input.length > 0) _input = _input.substring(0, _input.length - 1);
-      } else {
-        _input = '$_input$num';
-      }
-
-      if (_input.length == PIN_LENGTH) {
-        _isLoading = true;
-
-        Future.delayed(Duration.zero, () async {
-          print('USER INPUT: $_input');
-
-          var isLogin = await _login(_input);
-          setState(() {
-            _isLoading = false;
-          });
-
-          if (isLogin == null) return;
-
-          if (isLogin) {
-            Navigator.pushReplacementNamed(context, HomePage.routeName);
-          } else {
-            setState(() {
-              _input = '';
-            });
-            _showMaterialDialog('LOGIN FAILED', 'Invalid PIN. Please try again.');
-          }
+    if (num == -1) {
+      if (_input.length > 0) {
+        setState(() {
+          _input = _input.substring(0, _input.length - 1);
         });
       }
-    });
+    } else {
+      setState(() {
+        _input = '$_input$num';
+      });
+    }
+
+    if (_input.length == PIN_LENGTH) {
+      var isLogin = await _login(_input);
+
+      if (isLogin == null) return;
+
+      if (isLogin) {
+        Navigator.pushReplacementNamed(context, HomePage.routeName);
+      } else {
+        setState(() {
+          _input = '';
+        });
+        _showMaterialDialog('LOGIN FAILED', 'Invalid PIN. Please try again.');
+      }
+    }
   }
 
   void _showMaterialDialog(String title, String msg) {
@@ -206,6 +201,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool?> _login(String pin) async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       var isLogin = (await Api().submit('login', {'pin': pin})) as bool;
       print('LOGIN: $isLogin');
       return isLogin;
@@ -213,6 +211,10 @@ class _LoginPageState extends State<LoginPage> {
       print(e);
       _showMaterialDialog('ERROR', e.toString());
       return null;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }
