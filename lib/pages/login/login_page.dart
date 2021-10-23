@@ -109,7 +109,11 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               color: Colors.black.withOpacity(0.5),
               child: Center(
-                child: CircularProgressIndicator(color: Colors.white),
+                child: SizedBox(
+                  width: 20.0,
+                  height: 20.0,
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
               ),
             ),
         ],
@@ -204,6 +208,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = true;
       });
+
       var isLogin = (await Api().submit('login', {'pin': pin})) as bool;
       print('LOGIN: $isLogin');
       return isLogin;
