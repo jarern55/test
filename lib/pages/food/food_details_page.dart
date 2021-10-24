@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_food/helpers/platform_aware_asset_image.dart';
 import 'package:flutter_food/models/food_item.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,14 +21,10 @@ class FoodDetailsPage extends StatelessWidget {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 3 / 2,
-              child: PlatformAwareAssetImage(
-                assetPath: 'assets/images/${foodItem.image}',
+              child: Image.network(
+                foodItem.image,
                 fit: BoxFit.cover,
               ),
-              /*child: Image.asset(
-                'assets/images/${foodItem.image}',
-                fit: BoxFit.cover,
-              ),*/
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
